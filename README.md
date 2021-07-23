@@ -2,6 +2,6 @@
 
 - Run sh setup.sh
 
-- Access Api http://localhost
+- Access Front http://localhost
 
-- Access Front http://localhost/front-end
+- Access Api http://localhost/back-end
