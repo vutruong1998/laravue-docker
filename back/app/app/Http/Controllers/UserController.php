@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -15,7 +16,7 @@ class UserController extends Controller
     public function index()
     {
         //
-        return response()->json(User::paginate(8));
+        return response()->json(User::all());
     }
 
     /**
@@ -37,7 +38,9 @@ class UserController extends Controller
     public function store(Request $request)
     {
         //
-        $user = User::create($request->all());
+        $input = $request->all();
+        $input['password'] = Hash::make(123456);
+        $user = User::create($input);
         return response()->json($user);
     }
 
@@ -50,6 +53,7 @@ class UserController extends Controller
     public function show($id)
     {
         //
+        return response()->json(User::findOrFail($id));
     }
 
     /**
@@ -90,5 +94,12 @@ class UserController extends Controller
         $user = User::findOrFail($id);
         $user->delete();
         return response()->json($id);
+    }
+
+    public function completed($id)
+    {
+        $user = User::findOrFail($id);
+        $user->update([ 'status' => User::STATUS_COMPLETED ]);
+        return response()->json($user);
     }
 }
